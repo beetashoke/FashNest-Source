@@ -1,0 +1,98 @@
+{
+  "actions": [],
+  "allow_import": true,
+  "creation": "2025-09-30 00:00:00.000000",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "title",
+    "category",
+    "subcategory",
+    "image",
+    "short_description",
+    "price",
+    "is_published",
+    "order"
+  ],
+  "fields": [
+    {
+      "fieldname": "title",
+      "fieldtype": "Data",
+      "label": "Title",
+      "reqd": 1
+    },
+    {
+      "fieldname": "category",
+      "fieldtype": "Link",
+      "label": "Category",
+      "options": "Uniform Category",
+      "reqd": 1
+    },
+    {
+      "fieldname": "subcategory",
+      "fieldtype": "Link",
+      "label": "Subcategory",
+      "options": "Uniform Subcategory"
+    },
+    {
+      "fieldname": "image",
+      "fieldtype": "Attach Image",
+      "label": "Image"
+    },
+    {
+      "fieldname": "short_description",
+      "fieldtype": "Small Text",
+      "label": "Short Description"
+    },
+    {
+      "fieldname": "price",
+      "fieldtype": "Currency",
+      "label": "Price"
+    },
+    {
+      "default": "1",
+      "fieldname": "is_published",
+      "fieldtype": "Check",
+      "label": "Published"
+    },
+    {
+      "fieldname": "order",
+      "fieldtype": "Int",
+      "label": "Sort Order",
+      "default": "0"
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "is_submittable": 0,
+  "istable": 0,
+  "links": [],
+  "modified": "2025-09-30 00:00:00.000000",
+  "module": "google_testing",
+  "name": "Uniform Item",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Website Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Guest",
+      "read": 1
+    }
+  ],
+  "quick_entry": 1,
+  "sort_field": "order",
+  "sort_order": "asc",
+  "track_changes": 1
+}

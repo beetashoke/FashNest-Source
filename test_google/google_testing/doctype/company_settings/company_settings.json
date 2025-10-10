@@ -1,0 +1,143 @@
+{
+    "actions": [],
+    "allow_import": true,
+    "creation": "2025-09-30 00:00:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+        "company_name",
+        "tagline",
+        "phone",
+        "email",
+        "address",
+        "city",
+        "state",
+        "pincode",
+        "website",
+        "social_media",
+        "is_active"
+    ],
+    "fields": [
+        {
+            "fieldname": "company_name",
+            "fieldtype": "Data",
+            "label": "Company Name",
+            "reqd": 1
+        },
+        {
+            "fieldname": "tagline",
+            "fieldtype": "Data",
+            "label": "Tagline",
+            "default": "Creating Harmony"
+        },
+        {
+            "fieldname": "phone",
+            "fieldtype": "Data",
+            "label": "Phone Number",
+            "reqd": 1
+        },
+        {
+            "fieldname": "email",
+            "fieldtype": "Data",
+            "label": "Email Address",
+            "reqd": 1
+        },
+        {
+            "fieldname": "address",
+            "fieldtype": "Small Text",
+            "label": "Address",
+            "reqd": 1
+        },
+        {
+            "fieldname": "city",
+            "fieldtype": "Data",
+            "label": "City",
+            "reqd": 1
+        },
+        {
+            "fieldname": "state",
+            "fieldtype": "Data",
+            "label": "State",
+            "reqd": 1
+        },
+        {
+            "fieldname": "pincode",
+            "fieldtype": "Data",
+            "label": "Pincode",
+            "reqd": 1
+        },
+        {
+            "fieldname": "website",
+            "fieldtype": "Data",
+            "label": "Website"
+        },
+        {
+            "fieldname": "social_media",
+            "fieldtype": "Section Break",
+            "label": "Social Media"
+        },
+        {
+            "fieldname": "facebook_url",
+            "fieldtype": "Data",
+            "label": "Facebook URL"
+        },
+        {
+            "fieldname": "twitter_url",
+            "fieldtype": "Data",
+            "label": "Twitter URL"
+        },
+        {
+            "fieldname": "instagram_url",
+            "fieldtype": "Data",
+            "label": "Instagram URL"
+        },
+        {
+            "fieldname": "youtube_url",
+            "fieldtype": "Data",
+            "label": "YouTube URL"
+        },
+        {
+            "fieldname": "whatsapp_number",
+            "fieldtype": "Data",
+            "label": "WhatsApp Number"
+        },
+        {
+            "fieldname": "is_active",
+            "fieldtype": "Check",
+            "label": "Active",
+            "default": "1"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "is_submittable": 0,
+    "istable": 0,
+    "links": [],
+    "modified": "2025-09-30 00:00:00.000000",
+    "module": "google_testing",
+    "name": "Company Settings",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        },
+        {
+            "role": "Website Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        },
+        {
+            "role": "Guest",
+            "read": 1
+        }
+    ],
+    "quick_entry": 1,
+    "track_changes": 1
+}
+

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uniformity - Collection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      body { margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:#f6f8fc; color:#0f172a; }
+      .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+      a.btn { display:inline-flex; align-items:center; gap:8px; background:#1f6feb; color:#fff; padding:10px 14px; border-radius:8px; text-decoration:none; font-weight:700; }
+      .grid { display:grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+      .card { grid-column: span 12; background:#fff; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden; }
+      @media (min-width: 800px) { .card { grid-column: span 3; } }
+      .media { aspect-ratio: 4/3; background:#dbeafe; display:flex; align-items:center; justify-content:center; }
+      .media img { width:100%; height:100%; object-fit:cover; }
+      .body { padding:12px; }
+      .title { font-weight:700; }
+      .muted { color:#475569; font-size:13px; }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin: 8px 0 16px;">
+        <a class="btn" href="/uniforms">← Back</a>
+        <h2 id="cat-title" style="margin:0;">Collection</h2>
+        <span></span>
+      </div>
+      <div id="root" class="grid"></div>
+    </main>
+    <script>
+      const base = "/api/method/test_google.google_testing.api";
+      const slug = decodeURIComponent(window.location.pathname.split("/").pop());
+      const root = document.getElementById("root");
+      const titleEl = document.getElementById("cat-title");
+      async function boot() {
+        const [catsRes, itemsRes] = await Promise.all([
+          fetch(`${base}.list_categories`).then(r=>r.json()),
+          fetch(`${base}.list_items?category=${encodeURIComponent(slug)}`).then(r=>r.json())
+        ]);
+        const category = (catsRes.message||catsRes.data||[]).find(c=> (c.slug||c.name) === slug);
+        if (category) titleEl.textContent = category.title || category.slug;
+        const items = itemsRes.message || itemsRes.data || [];
+        if (!items.length) { root.innerHTML = '<div class="muted">No items yet.</div>'; return; }
+        root.innerHTML = items.map(item => `
+          <div class="card">
+            <div class="media">${item.image ? `<img src="${item.image}" alt="${item.title}">` : ""}</div>
+            <div class="body">
+              <div class="title">${item.title}</div>
+              <div class="muted">${item.short_description || ""}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+      boot();
+    </script>
+  </body>
+  </html>
+
+
+

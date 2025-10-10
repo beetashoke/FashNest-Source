@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uniformity - Collections</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root { --bg:#eef3fb; --card:#ffffff; --primary:#1f6feb; --text:#0f172a; --muted:#475569; --ring:#c7d2fe; }
+      * { box-sizing: border-box; }
+      body { margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--text); }
+      header { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #e5e7eb; z-index: 10; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+      .brand { display:flex; align-items:center; gap:8px; font-weight:800; font-size:22px; letter-spacing:0.5px; }
+      .grid { display:grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+      .card { grid-column: span 12; background: var(--card); border-radius: 16px; box-shadow: 0 8px 24px rgba(15,23,42,.06); overflow:hidden; border:1px solid #e5e7eb; }
+      @media (min-width: 800px) { .card { grid-column: span 4; } }
+      .card-media { width:100%; aspect-ratio: 16/10; background:#0ea5e9; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+      .card-media img { width:100%; height:100%; object-fit: cover; }
+      .card-body { padding: 18px; text-align:center; }
+      .title { font-weight:800; font-size: 20px; line-height:1.2; margin: 10px 0 6px; text-transform: uppercase; }
+      .desc { color: var(--muted); font-size:14px; min-height: 42px; }
+      .btn { margin: 14px auto 4px; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding: 12px 16px; background: var(--primary); color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer; box-shadow: 0 6px 16px rgba(31,111,235,.25); text-decoration:none; }
+      .btn:hover { filter: brightness(0.98); }
+      .footer { text-align:center; padding: 30px 0 60px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="brand">UNIFORMITY</div>
+      </div>
+    </header>
+    <main class="container">
+      <div id="root"></div>
+    </main>
+    <footer class="footer">
+      <a class="btn" id="download-brochure" href="/assets/test_google/js/brochure.pdf" download>Download Brochure</a>
+    </footer>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script>
+      window.__APP_CONTEXT__ = {
+        apiBase: "/api/method/test_google.google_testing.api"
+      };
+    </script>
+    <script type="module" src="./main.js"></script>
+  </body>
+  </html>
+
+

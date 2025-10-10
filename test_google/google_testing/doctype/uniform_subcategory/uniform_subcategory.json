@@ -1,0 +1,92 @@
+{
+    "actions": [],
+    "allow_import": true,
+    "creation": "2025-09-30 00:00:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+        "title",
+        "slug",
+        "category",
+        "image",
+        "description",
+        "order",
+        "is_published"
+    ],
+    "fields": [
+        {
+            "fieldname": "title",
+            "fieldtype": "Data",
+            "label": "Title",
+            "reqd": 1
+        },
+        {
+            "fieldname": "slug",
+            "fieldtype": "Data",
+            "label": "Slug",
+            "unique": 1
+        },
+        {
+            "fieldname": "category",
+            "fieldtype": "Link",
+            "label": "Category",
+            "options": "Uniform Category",
+            "reqd": 1
+        },
+        {
+            "fieldname": "image",
+            "fieldtype": "Attach Image",
+            "label": "Image"
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Small Text",
+            "label": "Description"
+        },
+        {
+            "fieldname": "order",
+            "fieldtype": "Int",
+            "label": "Sort Order",
+            "default": "0"
+        },
+        {
+            "fieldname": "is_published",
+            "fieldtype": "Check",
+            "label": "Published",
+            "default": "1"
+        }
+    ],
+    "is_submittable": 0,
+    "istable": 0,
+    "links": [],
+    "modified": "2025-09-30 00:00:00.000000",
+    "module": "google_testing",
+    "name": "Uniform Subcategory",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        },
+        {
+            "role": "Website Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        },
+        {
+            "role": "Guest",
+            "read": 1
+        }
+    ],
+    "quick_entry": 1,
+    "sort_field": "order",
+    "sort_order": "asc",
+    "track_changes": 1
+}
+
