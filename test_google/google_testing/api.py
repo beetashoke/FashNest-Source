@@ -1,4 +1,21 @@
 import frappe
+from frappe.utils import now, cstr
+import hashlib
+
+
+def add_cors_headers():
+	"""Add CORS headers to the response"""
+	if (
+		hasattr(frappe.local, "response")
+		and frappe.local.response
+		and hasattr(frappe.local.response, "headers")
+	):
+		frappe.local.response.headers["Access-Control-Allow-Origin"] = "*"
+		frappe.local.response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+		frappe.local.response.headers["Access-Control-Allow-Headers"] = (
+			"Content-Type, Authorization, X-Requested-With"
+		)
+		frappe.local.response.headers["Access-Control-Allow-Credentials"] = "true"
 
 
 @frappe.whitelist(allow_guest=True)
@@ -265,3 +282,223 @@ def generate_brochure():
 		"filename": f"{company.get('company_name', 'UNIFORMITY').replace(' ', '_')}_Brochure.txt",
 		"type": "text/plain",
 	}
+
+
+# Authentication API endpoints
+
+
+@frappe.whitelist(allow_guest=True)
+def user_signup(first_name, last_name, email, phone, password, address, city, state, pincode):
+	"""Register a new user."""
+	try:
+		# Check if customer already exists
+		if frappe.db.exists("Customer", {"email": email}):
+			return {"success": False, "message": "Customer with this email already exists"}
+
+		# Check if user already exists
+		if frappe.db.exists("User", {"email": email}):
+			return {"success": False, "message": "User with this email already exists"}
+
+		# Create new customer
+		customer_doc = frappe.get_doc(
+			{
+				"doctype": "Customer",
+				"first_name": first_name,
+				"last_name": last_name,
+				"email": email,
+				"phone": phone,
+				"address": address,
+				"city": city,
+				"state": state,
+				"pincode": pincode,
+				"is_active": 1,
+				"created_at": now(),
+			}
+		)
+		customer_doc.insert()
+
+		# Create Frappe User using system method
+		# Use Administrator to create the user
+		frappe.set_user("Administrator")
+
+		user_doc = frappe.get_doc(
+			{
+				"doctype": "User",
+				"email": email,
+				"first_name": first_name,
+				"last_name": last_name,
+				"new_password": password,
+				"send_welcome_email": 0,
+				"enabled": 1,
+				"user_type": "System User",
+				"roles": [{"role": "System Manager"}],
+			}
+		)
+		user_doc.insert(ignore_permissions=True)
+
+		frappe.set_user("Guest")
+
+		frappe.db.commit()
+
+		return {
+			"success": True,
+			"message": "Customer registered successfully",
+			"customer_id": customer_doc.name,
+			"user_id": user_doc.name,
+		}
+
+	except Exception as e:
+		frappe.log_error(f"User signup error: {str(e)}")
+		return {"success": False, "message": f"Registration failed: {str(e)}"}
+
+
+@frappe.whitelist(allow_guest=True)
+def test_login_debug(email):
+	"""Debug login function."""
+	try:
+		customer = frappe.get_value(
+			"Customer", {"email": email, "is_active": 1}, ["name", "password", "email"], as_dict=True
+		)
+		return {"success": True, "customer": customer}
+	except Exception as e:
+		return {"success": False, "error": str(e)}
+
+
+@frappe.whitelist(allow_guest=True)
+def test_password_debug(email, password):
+	"""Debug password function."""
+	try:
+		customer = frappe.get_value("Customer", {"email": email, "is_active": 1}, ["name"], as_dict=True)
+		if not customer:
+			return {"success": False, "message": "Customer not found"}
+
+		customer_doc = frappe.get_doc("Customer", customer.name)
+		return {
+			"success": True,
+			"stored_password": customer_doc.password,
+			"provided_password": password,
+			"match": customer_doc.password == password,
+		}
+	except Exception as e:
+		return {"success": False, "error": str(e)}
+
+
+@frappe.whitelist(allow_guest=True)
+def user_login(email, password):
+	"""Authenticate user login."""
+	try:
+		# Check if user exists
+		user = frappe.get_value("User", {"email": email, "enabled": 1}, ["name"], as_dict=True)
+
+		if not user:
+			return {"success": False, "message": "Invalid email or password"}
+
+		# Use Frappe's built-in authentication
+		from frappe.auth import LoginManager
+
+		login_manager = LoginManager()
+		login_manager.authenticate(email, password)
+
+		if not login_manager.user:
+			return {"success": False, "message": "Invalid email or password"}
+
+		# Get customer data
+		customer = frappe.get_value("Customer", {"email": email}, ["name"], as_dict=True)
+
+		if customer:
+			customer_data = frappe.get_value(
+				"Customer",
+				customer.name,
+				[
+					"name",
+					"first_name",
+					"last_name",
+					"email",
+					"phone",
+					"address",
+					"city",
+					"state",
+					"pincode",
+					"created_at",
+				],
+				as_dict=True,
+			)
+		else:
+			# If no customer found, return user data
+			customer_data = frappe.get_value(
+				"User",
+				user.name,
+				[
+					"name",
+					"first_name",
+					"last_name",
+					"email",
+					"phone",
+					"address",
+					"city",
+					"state",
+					"pincode",
+					"creation",
+				],
+				as_dict=True,
+			)
+
+		return {"success": True, "message": "Login successful", "user": customer_data}
+
+	except Exception as e:
+		frappe.log_error(f"User login error: {str(e)}")
+		return {"success": False, "message": f"Login failed: {str(e)}"}
+
+
+@frappe.whitelist(allow_guest=True)
+def get_user_profile(user_id):
+	"""Get user profile by ID."""
+	try:
+		customer_data = frappe.get_value(
+			"Customer",
+			user_id,
+			[
+				"name",
+				"first_name",
+				"last_name",
+				"email",
+				"phone",
+				"address",
+				"city",
+				"state",
+				"pincode",
+				"created_at",
+			],
+			as_dict=True,
+		)
+
+		if not customer_data:
+			return {"success": False, "message": "Customer not found"}
+
+		return {"success": True, "user": customer_data}
+
+	except Exception as e:
+		frappe.log_error(f"Get user profile error: {str(e)}")
+		return {"success": False, "message": f"Failed to get user profile: {str(e)}"}
+
+
+@frappe.whitelist(allow_guest=True)
+def update_user_profile(user_id, **kwargs):
+	"""Update user profile."""
+	try:
+		customer_doc = frappe.get_doc("Customer", user_id)
+
+		# Update allowed fields
+		allowed_fields = ["first_name", "last_name", "phone", "address", "city", "state", "pincode"]
+		for field, value in kwargs.items():
+			if field in allowed_fields and value is not None:
+				customer_doc.set(field, value)
+
+		customer_doc.save()
+		frappe.db.commit()
+
+		return {"success": True, "message": "Profile updated successfully"}
+
+	except Exception as e:
+		frappe.log_error(f"Update user profile error: {str(e)}")
+		return {"success": False, "message": f"Failed to update profile: {str(e)}"}

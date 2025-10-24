@@ -6,41 +6,41 @@
     "editable_grid": 1,
     "engine": "InnoDB",
     "field_order": [
-        "company_name",
-        "tagline",
-        "phone",
+        "first_name",
+        "last_name",
         "email",
+        "phone",
         "address",
         "city",
         "state",
         "pincode",
-        "website",
-        "social_media",
-        "is_active"
+        "is_active",
+        "created_at"
     ],
     "fields": [
         {
-            "fieldname": "company_name",
+            "fieldname": "first_name",
             "fieldtype": "Data",
-            "label": "Company Name",
+            "label": "First Name",
             "reqd": 1
         },
         {
-            "fieldname": "tagline",
+            "fieldname": "last_name",
             "fieldtype": "Data",
-            "label": "Tagline",
-            "default": "Creating Harmony"
-        },
-        {
-            "fieldname": "phone",
-            "fieldtype": "Data",
-            "label": "Phone Number",
+            "label": "Last Name",
             "reqd": 1
         },
         {
             "fieldname": "email",
             "fieldtype": "Data",
             "label": "Email Address",
+            "reqd": 1,
+            "unique": 1
+        },
+        {
+            "fieldname": "phone",
+            "fieldtype": "Data",
+            "label": "Phone Number",
             "reqd": 1
         },
         {
@@ -68,45 +68,16 @@
             "reqd": 1
         },
         {
-            "fieldname": "website",
-            "fieldtype": "Data",
-            "label": "Website"
-        },
-        {
-            "fieldname": "social_media",
-            "fieldtype": "Section Break",
-            "label": "Social Media"
-        },
-        {
-            "fieldname": "facebook_url",
-            "fieldtype": "Data",
-            "label": "Facebook URL"
-        },
-        {
-            "fieldname": "twitter_url",
-            "fieldtype": "Data",
-            "label": "Twitter URL"
-        },
-        {
-            "fieldname": "instagram_url",
-            "fieldtype": "Data",
-            "label": "Instagram URL"
-        },
-        {
-            "fieldname": "youtube_url",
-            "fieldtype": "Data",
-            "label": "YouTube URL"
-        },
-        {
-            "fieldname": "whatsapp_number",
-            "fieldtype": "Data",
-            "label": "WhatsApp Number"
-        },
-        {
             "fieldname": "is_active",
             "fieldtype": "Check",
             "label": "Active",
             "default": "1"
+        },
+        {
+            "fieldname": "created_at",
+            "fieldtype": "Datetime",
+            "label": "Created At",
+            "read_only": 1
         }
     ],
     "index_web_pages_for_search": 1,
@@ -115,7 +86,7 @@
     "links": [],
     "modified": "2025-09-30 00:00:00.000000",
     "module": "google_testing",
-    "name": "Company Settings",
+    "name": "Customer",
     "owner": "Administrator",
     "permissions": [
         {
@@ -134,14 +105,11 @@
         },
         {
             "role": "Guest",
-            "read": 1
+            "read": 1,
+            "write": 1,
+            "create": 1
         }
     ],
     "quick_entry": 1,
     "track_changes": 1
 }
-
-
-
-
-
